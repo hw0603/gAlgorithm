@@ -863,6 +863,12 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Java class File
+*.class
+
+# MAC OS
+.DS_Store
+
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
