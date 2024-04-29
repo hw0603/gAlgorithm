@@ -23,25 +23,5 @@ public class BOJ24499 {
             max = Math.max(a[i], max);
         }
 
-        int[] dp = new int[n];
-        for (int i = 0; i < k; i++) {
-            dp[0] += a[i];
-        }
-
-        if (k == 1) {
-            System.out.println(max);
-            return;
-        }
-
-        int preHap = dp[0];
-        for (int i = 1; i < n; i++) {
-            int next = (i + k - 1) % n;
-            int previous = (i - 1) % n;
-            int newNum = preHap + a[next] - a[previous];
-
-            dp[i] = Math.max(dp[i - 1], newNum);
-            preHap = newNum;
-        }
-        System.out.println(dp[n - 1]);
     }
 }
