@@ -873,3 +873,7 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/java,c++,visualstudio,vim,intellij,clion,visualstudiocode,python,xcode
+
+# hw0603
+input.txt
+.vscode/
