@@ -5,11 +5,12 @@ using namespace std;
 int n, k;
 tuple<int, int, int> arr[22];
 bool board[7][12];
-int cnt = 0;
-int tmp = 0;
+int cnt;
+int tmp;
+int idx;
 
 void func(int dep) {
-  if (dep == n) return;
+  if (dep == idx) return;
   func(dep+1);
   int w, st, en;
   tie(w, st, en) = arr[dep];
@@ -35,7 +36,8 @@ int main() {
   for (int i = 0; i < n; ++i) {
     int a, b, c;
     cin >> a >> b >> c;
-    arr[i] = {a, b, c};
+    if (a == 5) continue;
+    arr[idx++] = {a, b, c};
   }
   func(0);
   cout << cnt;
