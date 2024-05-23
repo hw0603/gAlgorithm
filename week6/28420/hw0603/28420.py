@@ -27,31 +27,6 @@ def generatePositions1(row, col):
 
     return result
 
-def validBound(row, col):
-    return 0 < row <= N and 0 < col <= M 
-
-def diff1(row, col):
-    minusPositions = []
-    for nr in range(row, row+a):
-        minusPositions.append((nr, col))
-    return minusPositions
-
-def diff2(row, col):
-    minusPositions = []
-    for nr in range(row, row+a):
-        minusPositions.append((nr, col))
-    for nr in range(row+a, row+a+b):
-        minusPositions.append((nr, col+c))
-    return minusPositions
-
-def diff3(row, col):
-    minusPositions = []
-    for nr in range(row, row+a):
-        minusPositions.append((nr, col))
-    for nr in range(row+a, row+a+c):
-        minusPositions.append((nr, col+b))
-    return minusPositions
-
 # 2. 트레일러 시작 ㄱ자
 def generatePositions2(row, col):
     result = []
@@ -98,6 +73,54 @@ def generatePositions3(row, col):
     
     return result
 
+def validBound(row, col):
+    return 0 < row <= N and 0 < col <= M 
+
+# 현재 좌표 기준 제일 왼쪽 좌표들
+def diff1(row, col):
+    minusPositions = []
+    for nr in range(row, row+a):
+        minusPositions.append((nr, col))
+    return minusPositions
+
+def diff2(row, col):
+    minusPositions = []
+    for nr in range(row, row+a):
+        minusPositions.append((nr, col))
+    for nr in range(row+a, row+a+b):
+        minusPositions.append((nr, col+c))
+    return minusPositions
+
+def diff3(row, col):
+    minusPositions = []
+    for nr in range(row, row+a):
+        minusPositions.append((nr, col))
+    for nr in range(row+a, row+a+c):
+        minusPositions.append((nr, col+b))
+    return minusPositions
+
+# 현재 좌표 기준 바로 오른쪽 다음 좌표들
+def plus1(row, col):
+    plusPositions = []
+    for nr in range(row, row+a):
+        plusPositions.append((nr, col+b+c))
+
+def plus2(row, col):
+    plusPositions = []
+    for nr in range(row, row+a):
+        plusPositions.append((nr, col+c))
+    for nr in range(row+a, row+a+b):
+        plusPositions.append((nr, col+c+a))
+    return plusPositions
+
+def plus3(row, col):
+    plusPositions = []
+    for nr in range(row, row+a):
+        plusPositions.append((nr, col+b))
+    for nr in range(row+a, row+a+c):
+        plusPositions.append((nr, col+b+a))
+    return plusPositions
+
 # 좌표 리스트를 받아서 흐림 정도의 합을 반환
 def calculateDimmingValue(coords: list):
     if not (coords):
@@ -106,31 +129,6 @@ def calculateDimmingValue(coords: list):
     return result
 
 minValue = sys.maxsize
-# for i in range(N):
-#     for j in range(M):
-#         minValue = min(minValue, calculateDimmingValue(generatePositions1(i, j)))
-#         minValue = min(minValue, calculateDimmingValue(generatePositions2(i, j)))
-#         minValue = min(minValue, calculateDimmingValue(generatePositions3(i, j)))
-
-# print(minValue)
-
-
-def plus2(row, col):
-    plusPositions = []
-    for nr in range(row, row+a):
-        plusPositions.append((nr, col+c))
-    for nr in range(row+a, row+a+b):
-        plusPositions.append((nr, col+c+1))
-    return plusPositions
-
-def plus3(row, col):
-    plusPositions = []
-    for nr in range(row, row+a):
-        plusPositions.append((nr, col+b))
-    for nr in range(row+a, row+a+c):
-        plusPositions.append((nr, col+b+1))
-    return plusPositions
-
 
 # 첫번째 ㅡ 자: b+c 만큼 더해짐
 for i in range(N-a+1):
@@ -141,7 +139,7 @@ for i in range(N-a+1):
         curRowInitial += calculateDimmingValue(diff1(i, j-1+(b+c)))
         minValue = min(minValue, curRowInitial)
 
-# 두번째: 
+# 두번째: 트레일러 시작 ㄱ자
 for i in range(N-(a+b)+1):
     curRowInitial = calculateDimmingValue(generatePositions2(i, 0))
     minValue = min(minValue, curRowInitial)
@@ -150,7 +148,7 @@ for i in range(N-(a+b)+1):
         curRowInitial += calculateDimmingValue(plus2(i, j-1))
         minValue = min(minValue, curRowInitial)
 
-# 세번째: 
+# 세번째: 차 시작 ㄱ자
 for i in range(N-(a+c)+1):
     curRowInitial = calculateDimmingValue(generatePositions3(i, 0))
     minValue = min(minValue, curRowInitial)
