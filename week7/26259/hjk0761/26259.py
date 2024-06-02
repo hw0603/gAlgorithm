@@ -27,6 +27,9 @@ for i in range(n):
                 continue
             dp[i+1][j+1] = backroom[i][j] + dp[i][j+1]
         else:
-            dp[i+1][j+1] = max(dp[i+1][j], dp[i][j+1]) + backroom[i][j]
+            if (dp[i+1][j] == -999999999 and dp[i][j+1] == -999999999):
+                    dp[i+1][j+1] = -999999999
+            else:
+                dp[i+1][j+1] = max(dp[i+1][j], dp[i][j+1]) + backroom[i][j]
 
 print(dp[n][m] if dp[n][m] != -999999999 else "Entity")
