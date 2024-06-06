@@ -14,3 +14,15 @@
 자꾸 `최소 벌금` 을 기준으로 생각해서 dp값을 기준으로 `min`을 계산하려고 해서 한참 헷갈렸다.
 
 생각을 조금만 바꿔 보면, 각 경우마다 피할 수 있는 벌금의 최댓값을 구해 주고, 마지막에 전체 벌금에서 그것을 빼 주면 일반 배낭 문제랑 정확히 동일하게 풀 수 있다.
+
+dp값을 `피할 수 있는 벌금` 이 아니라 `내야 할 벌금` 으로 잡으면 아래처럼 풀어야 함
+```python
+dp = [[totalFine] * (T+1) for  _ in range(N+1)]  # dp[i][j]: i번째 문제까지 조사했을 때, 제한이 j일때 피할 수 있는 벌금의 최댓값
+for i in range(1, N+1):
+    for limit in range(1, T+1):
+        if (problem[i][0] > limit):
+            dp[i][limit] = dp[i-1][limit]
+        else:
+            dp[i][limit] = min(dp[i-1][limit], dp[i-1][limit - problem[i][0]] - problem[i][1])
+print(dp[-1][-1])
+```
