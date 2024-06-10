@@ -4,6 +4,8 @@ using namespace std;
 #define FASTIO ios_base::sync_with_stdio(0); cout.tie(0);
 #define INF 1e9
 
+// 그냥 완탐 하세요.
+
 int main() {
     FASTIO;
     int N, H, D, K;
@@ -21,22 +23,29 @@ int main() {
     dp[0][D][0] = H;
     for(int i = 1; i <= N; i++) {
         for(int j = D; j <= 64; j++) {
+            // 사용 안한 상태(0) -> 사용 안한 상태(0)
+            // 이미 사용한 상태(1) -> 이미 사용한 상태(1)
             for(int k = 0; k <= 1; k++) {
+                // 웅크리기
                 if (dp[i - 1][j][k] != -INF) {
                     int health = dp[i - 1][j][k] - max(0, (R[i] - j) / 2);
                     dp[i][j][k] = max(dp[i][j][k], health);
                 }
+                // 네발로 걷기
                 if (j - K >= 0 && dp[i - 1][j - K][k] != -INF) {
                     int health = dp[i - 1][j - K][k] - max(0, (R[i] - j));
                     dp[i][j][k] = max(dp[i][j][k], health);
                 }
             }
+            // 지금 사용(2) -> 이미 사용한 상태(1) + 웅크리기
             if (dp[i - 1][j][2] != -INF) {
                 dp[i][j][1] = max(dp[i][j][1], dp[i - 1][j][2]);
             }
+            // 지금 사용(2) -> 이미 사용한 상태(1) + 네발로 걷기
             if (j - K >= 0 && dp[i - 1][j - K][2] != -INF) {
                 dp[i][j][1] = max(dp[i][j][1], dp[i - 1][j - K][2]);
             }
+            // 사용 안한 상태(0) -> 지금 사용(2)
             if (dp[i - 1][j][0] != -INF) {
                 int health = dp[i - 1][j][0] - max(0, (R[i] - j));
                 dp[i][j][2] = max(dp[i][j][2], health);
@@ -55,4 +64,5 @@ int main() {
     
     return 0;
 }
+
 

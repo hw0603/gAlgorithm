@@ -4,11 +4,14 @@ using namespace std;
 #define FASTIO ios_base::sync_with_stdio(0); cout.tie(0);
 #define MAX 1002
 
+// 이게 되네;;
+
 int H, W;
 vector<vector<int>> Map(MAX, vector<int>(MAX));
 vector<int> dy = {-1, 1, 0, 0};
 vector<int> dx = {0, 0, -1, 1};
 
+// 절댓값이 0~1이 아닌 곳이 있으면, 미로 만들기 불가능
 bool Check(int y, int x) {
     bool flag = true;
     for(int i = 0; i < 4; i++) {
@@ -23,6 +26,7 @@ bool Check(int y, int x) {
     return flag;
 }
 
+// 주변의 light보다 크거나 같으면 조명
 bool Find(int y, int x) {
     bool flag = true;
     for(int i = 0; i < 4; i++) {
@@ -46,6 +50,7 @@ int main() {
         }
     }
     
+    // 미로가 가능한지 확인
     bool flag = true;
     for(int i = 0; i < H; i++) {
         for(int j = 0; j < W; j++) {
@@ -56,6 +61,7 @@ int main() {
         }
     }
     
+    // 조명 개수 세기
     int cnt = 0;
     for(int i = 0; i < H; i++) {
         for(int j = 0; j < W; j++) {
