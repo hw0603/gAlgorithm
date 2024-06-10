@@ -19,7 +19,7 @@ public class BOJ29704 {
             nodes.add(new Node(a, b));
         }
 
-        int[][] dp = new int[t + 1][n + 1];
+        int[][] dp = new int[n + 1][t + 1];
         int sum = nodes.stream()
                 .mapToInt(node -> node.money)
                 .sum();
@@ -35,16 +35,7 @@ public class BOJ29704 {
             }
         }
 
-        System.out.println(sum - dp[t][n]);
-        //            for (int j = 1; j < nodes.size(); j++) {
-//                Node node = nodes.stream()
-//                        .filter(node1 -> node1.day == j)
-//                        .findFirst();
-////                dp[i - j] + arr[j]
-//            }
-//        }
-
-        // dp[i] = Math.min(dp[i - a] + arr[a])
+        System.out.println(sum - dp[n][t]);
     }
 }
 
