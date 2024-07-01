@@ -38,7 +38,7 @@ public class Main {
                         map[x2][y2] = 1; // 1로
                         //잡히는 2 개수 새기
                         countAndMax(map,n,m,color);
-                        map[x2][y2] = 0; // 1로
+                        map[x2][y2] = 0; // 0으로
                     }
                 }
                 map[x1][y1] = 0; // 다시 0으로
