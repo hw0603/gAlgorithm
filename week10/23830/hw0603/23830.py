@@ -11,7 +11,7 @@ def proceed(score: int, K: int) -> int:
         return score+q
     return score
 
-# K를 받아서 청소를 해야 하는지 안 해도 되는지 확인
+# 결정함수: K를 받아서 청소를 해야 하는지 안 해도 되는지 확인
 def check(K: int) -> bool:
     return True if sum(map(lambda s: proceed(s, K), scores)) < S else False
 
@@ -33,4 +33,3 @@ def search():
 
 result = search()
 print(result if result <= 110_000 else -1)
-# https://ws-pace.tistory.com/212
