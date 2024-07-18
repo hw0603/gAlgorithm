@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Validate issue format, create directories and markdowns
+      - name: Validate issue format
         run: |
           ISSUE_TITLE="${{ github.event.issue.title }}"
           id=("burningfalls" "donghoony" "hjk0761" "hw0603" "hyxrxn" "jminkkk" "robinjoon" "slimsha2dy")
@@ -34,11 +34,11 @@ jobs:
               mkdir -p "${DIRNAME}/${NUM}"
               for GID in "${id[@]}"; do
                   mkdir -p "${DIRNAME}/${NUM}/${GID}"
-                  echo -e "# Info\n\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${NUM}/${GID}/README.md"
+                  echo -e "# Info\n[Link](https://boj.kr/${NUM})\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${NUM}/${GID}/README.md"
               done
           done
       
-      - name: Check permissions
+      - name: Check if issue creator is in allowed list
         id: check_creator
         run: |
           ISSUE_CREATOR="${{ github.event.issue.user.login }}"
@@ -50,7 +50,7 @@ jobs:
               echo "allowed=false" >> $GITHUB_ENV
           fi
       
-      - name: Push directories and base markdown files
+      - name: Push changes if allowed
         if: env.allowed == 'true'
         run: |
           git config --local user.email "actions@github.com"
