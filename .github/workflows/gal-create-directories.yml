@@ -1,0 +1,52 @@
+name: Create Galgorithm directories
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  GAL:
+    runs-on: ubuntu-latest
+    if: "startsWith(github.event.issue.title, '[GAL]')"
+
+    permissions:
+      write-all
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Validate issue format, push to github
+        run: |
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          id=("burningfalls" "donghoony" "hjk0761" "hw0603" "hyxrxn" "jminkkk" "robinjoon" "slimsha2dy")
+          
+          if [[ ! "$ISSUE_TITLE" =~ ^\[GAL\]\ ([a-zA-Z0-9_-]+)\ ([0-9]+[,[0-9]+]*)$ ]]; then
+              echo "Issue title format is incorrect."
+              exit 1
+          fi  
+          
+          DIRNAME="${BASH_REMATCH[1]}"
+          NUMBERS="${BASH_REMATCH[2]}"
+          
+          IFS=',' read -ra NUM_ARRAY <<< "$NUMBERS"
+          for NUM in "${NUM_ARRAY[@]}"; do
+              mkdir -p "${DIRNAME}/${NUM}"
+              for GID in "${id[@]}"; do
+                  mkdir -p "${DIRNAME}/${NUM}/${GID}"
+                      echo -e "# Info\n\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${NUM}/${GID}/README.md"
+              done
+          done
+          
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "Create directories and files for GAL issue: ${{ github.event.issue.number }}"
+          git push
+
+      - name: Close issue after pushing
+        uses: peter-evans/close-issue@v3
+        with:
+          comment: |
+            Created directories, closing issue.
+  
