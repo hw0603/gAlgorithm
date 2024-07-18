@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Validate issue format, push to github
+      - name: Validate issue format, create directories and markdowns
         run: |
           ISSUE_TITLE="${{ github.event.issue.title }}"
           id=("burningfalls" "donghoony" "hjk0761" "hw0603" "hyxrxn" "jminkkk" "robinjoon" "slimsha2dy")
@@ -34,10 +34,25 @@ jobs:
               mkdir -p "${DIRNAME}/${NUM}"
               for GID in "${id[@]}"; do
                   mkdir -p "${DIRNAME}/${NUM}/${GID}"
-                      echo -e "# Info\n\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${NUM}/${GID}/README.md"
+                  echo -e "# Info\n\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${NUM}/${GID}/README.md"
               done
           done
+      
+      - name: Check permissions
+        id: check_creator
+        run: |
+          ISSUE_CREATOR="${{ github.event.issue.user.login }}"
+          id=("burningfalls" "donghoony" "hjk0761" "hw0603" "hyxrxn" "jminkkk" "robinjoon" "slimsha2dy")
           
+          if [[ " ${id[@]} " =~ " $ISSUE_CREATOR " ]]; then
+              echo "allowed=true" >> $GITHUB_ENV
+          else
+              echo "allowed=false" >> $GITHUB_ENV
+          fi
+      
+      - name: Push directories and base markdown files
+        if: env.allowed == 'true'
+        run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add .
@@ -47,6 +62,6 @@ jobs:
       - name: Close issue after pushing
         uses: peter-evans/close-issue@v3
         with:
+          issue-number: ${{ github.event.issue.number }}
           comment: |
             Created directories, closing issue.
-  
