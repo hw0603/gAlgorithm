@@ -30,11 +30,14 @@ jobs:
           NUMBERS="${BASH_REMATCH[2]}"
           
           IFS=',' read -ra NUM_ARRAY <<< "$NUMBERS"
-          for NUM in "${NUM_ARRAY[@]}"; do
-              mkdir -p "${DIRNAME}/${NUM}"
+          PREFIX=({A..Z})
+          for i in "${!NUM_ARRAY[@]}"; do
+              NUM="${NUM_ARRAY[$i]}"
+              PREFIX_CHAR="${PREFIX[$i]}"
+              mkdir -p "${DIRNAME}/${PREFIX_CHAR}_${NUM}"
               for GID in "${id[@]}"; do
-                  mkdir -p "${DIRNAME}/${NUM}/${GID}"
-                  echo -e "# Info\n[Link](https://boj.kr/${NUM})\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${NUM}/${GID}/README.md"
+                  mkdir -p "${DIRNAME}/${PREFIX_CHAR}_${NUM}/${GID}"
+                  echo -e "# Info\n[Link](https://boj.kr/${NUM})\n## 💡 풀이 방법 요약\n\n## 👀 실패 이유\n\n## 🙂 마무리" > "${DIRNAME}/${PREFIX_CHAR}_${NUM}/${GID}/README.md"
               done
           done
       
